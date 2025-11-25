@@ -1,4 +1,6 @@
 package model.entities;
+import model.exceptions.DomainException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -13,7 +15,10 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(Integer roomNumber, Date checkIn, Date checkOut) {
+    public Reservation(Integer roomNumber, Date checkIn, Date checkOut) throws DomainException {
+        if (!checkOut.after(checkIn)) {
+            throw new DomainException("Datas inválidas! Check-in precisa ser feito antes do check-out");
+        }
         this.roomNumber = roomNumber;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
@@ -40,18 +45,17 @@ public class Reservation {
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
-    public String updateDates(Date checkIn, Date checkOut){
+    public void updateDates(Date checkIn, Date checkOut) throws DomainException {
         Date now = new Date();
         if (checkIn.before(now) || checkOut.before(now)){
-            return  "Datas inválidas! A novas datas são anteriores a atual";
+            throw  new DomainException("Datas inválidas! A novas datas são anteriores a atual");
         }
         if (!checkIn.after(now)) {
-            return  "Datas inválidas! Check-in precisa ser feito antes do check-out";
+            throw new DomainException("Datas inválidas! Check-in precisa ser feito antes do check-out");
         }
 
         this.checkIn = checkIn;
         this.checkOut = checkOut;
-        return null;
     }
 
     @Override
