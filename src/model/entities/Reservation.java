@@ -37,7 +37,7 @@ public class Reservation {
 
     public long duration(){
         long diff = checkOut.getTime() - checkIn.getTime();
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MICROSECONDS);
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
     public void updateDates(Date checkIn, Date checkOut){
@@ -51,7 +51,7 @@ public class Reservation {
         sb.append("Quarto: ").append(roomNumber);
         sb.append(", check-in em: ").append(sdf.format(checkIn));
         sb.append(" com check-out em: ").append(sdf.format(checkOut));
-        sb.append(". Duração de ").append(duration()).append("noites");
+        sb.append(". Duração de ").append(duration()).append(" noites");
         return sb.toString();
     }
 }
