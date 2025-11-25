@@ -21,6 +21,7 @@ public class Program {
         System.out.print("Data de check-out (DD/MM/AAAA): ");
         Date checkOut = sdf.parse(sc.next());
 
+        //Essa válidação deveria ser feita no construtor, mas o construtor não pode retornar Strings
         if (!checkOut.after(checkIn)){
             System.out.println("Datas inválidas! Check-in precisa ser feito antes do check-out");
         }else {
@@ -34,13 +35,10 @@ public class Program {
             System.out.print("Data de check-out (DD/MM/AAAA): ");
             checkOut = sdf.parse(sc.next());
 
-            Date now = new Date();
-            if (checkIn.before(now) || checkOut.before(now)){
-                System.out.println("Datas inválidas! A novas datas são anteriores a atual");
-            } else if (!checkIn.after(now)) {
-                System.out.println("Datas inválidas! Check-in precisa ser feito antes do check-out");
-            } else {
-                reservation.updateDates(checkIn, checkOut);
+            String error = reservation.updateDates(checkIn, checkOut);
+            if (error != null){
+                System.out.println("Erro na reserva: " + error);
+            }else{
                 System.out.println("Reserva: \n" + reservation.toString());
             }
         }
